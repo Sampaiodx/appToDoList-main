@@ -1,13 +1,13 @@
 const urlAPI = "http://localhost:3000/tarefas"
  
 const inputTarefa = document.querySelector(".campo-tarefa");
- 
 const botaoAdicionar = document.querySelector(".botao-adicionar");
- 
 const listaTarefas = document.querySelector(".lista-tarefas");
 
 async function renderizarTarefas() {
     try{
+        listaTarefas.innerHTML = ""; // Limpa a lista antes de renderizar
+
         const resposta = await fetch(urlAPI);
         const tarefas = await resposta.json();
 
@@ -20,11 +20,34 @@ async function renderizarTarefas() {
             const botaoRemover = document.createElement('button');
             botaoRemover.className = 'botao-remover';
             botaoRemover.textContent = 'Excluir';
+
+            botaoRemover.addEventListener("click", () =>{
+                removerTarefa(tarefa.id)
+            })
   
-            /*Botão editar criado para editar cada item da lista -> Ainda não funciona*/
+            /*Botão editar criado para editar cada item da lista*/
             const botaoEditar = document.createElement('button');
             botaoEditar.className = 'botao-editar';
             botaoEditar.textContent = 'Editar';
+
+            // Evento do botão Editar
+            botaoEditar.addEventListener("click", async () => {
+                const novoTitulo = prompt("Digite o novo título da tarefa:", tarefa.titulo);
+                if (novoTitulo && novoTitulo.trim() !== "") {
+                    try {
+                        await fetch(`${urlAPI}/${tarefa.id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ titulo: novoTitulo.trim() })
+                        });
+                        renderizarTarefas(); // Atualiza a lista
+                    } catch (error) {
+                        console.error("Erro ao editar tarefa:", error);
+                    }
+                }
+            });
 
             itemLista.appendChild(botaoRemover);
             itemLista.appendChild(botaoEditar);
@@ -54,7 +77,19 @@ async function adicionarTarefa(titulo) {
         console.error("Erro ao adicionar tarefa:", error)
     }
 }
- 
+
+   /*Função para remover uma tarefa*/
+async function removerTarefa(id) {
+    try {
+        await fetch(`${urlAPI}/${id}`, {
+            method: "DELETE"
+        });
+        renderizarTarefas(); 
+    } catch (erro) {
+        console.error("Erro ao remover tarefa:", erro);
+    }
+}
+
 botaoAdicionar.addEventListener("click", function (evento){
     evento.preventDefault();
     const novaTarefa = inputTarefa.value.trim();
@@ -67,4 +102,8 @@ botaoAdicionar.addEventListener("click", function (evento){
  
 //Iniciar a aplicação com as tarefas já renderizadas
 renderizarTarefas();
+
+
+
+
 
