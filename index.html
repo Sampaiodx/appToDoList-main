@@ -9,9 +9,30 @@
 </head>
 <body>
     <h1 class="titulo"> Minha Lista de Tarefas</h1>
-    <form>
-    <input class = "campo-tarefa" type = "textdd" placeholder="Digite uma tarefa"> <!-- Campo de texto para digitar a tarefa -->
-    <button class ="botao-adicionar" type="submit">Adicionar</button> <!-- Botão para adicionar a tarefa -->
+    <form id="form-tarefa">
+        
+    <input class="campo-tarefa campo-titulo" type="text" placeholder="Digite o título da tarefa" required/> <!-- Campo de texto para digitar a tarefa -->
+    <textarea class="campo-tarefa campo-descricao" placeholder="Digite a descrição da sua tarefa" ></textarea>
+    <label for="status">Status:</label>
+    <select class="campo-tarefa campo-status" required>
+        <option value="">Selecione o status</option>
+        <option value="Pendente">Pendente</option>
+        <option value="Andamento">Andamento</option>
+        <option value="Concluido">Concluído</option>
+    </select>
+
+    <label for="Prioridade">Prioridade:</label>
+    <select class="campo-tarefa campo-prioridade" required>
+        <option value="">Selecione a prioridade</option>
+        <option value="Baixa">Baixa</option>
+        <option value="Média">Média</option>
+        <option value="Alta">Alta</option>
+    </select>
+
+    <label for="Data Entrega">Data de Entrega:</label>
+    <input class="campo-tarefa campo-data-entrega" type="date" placeholder="Data de Entrega">
+
+    <button class="botao-adicionar" type="submit">Adicionar</button>
     </form>
  
     <ul class="lista-tarefas"> <!-- Lista de tarefas -->
